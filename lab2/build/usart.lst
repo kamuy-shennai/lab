@@ -1,0 +1,294 @@
+ARM GAS  /tmp/ccdY0hyf.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"usart.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/usart.c"
+  20              		.section	.text.HAL_UART_RxCpltCallback,"ax",%progbits
+  21              		.align	1
+  22              		.global	HAL_UART_RxCpltCallback
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	HAL_UART_RxCpltCallback:
+  28              	.LVL0:
+  29              	.LFB130:
+   1:Core/Src/usart.c **** #include "stm32f4xx_hal.h"
+   2:Core/Src/usart.c **** 
+   3:Core/Src/usart.c **** #if SYSTEM_SUPPORT_OS
+   4:Core/Src/usart.c **** #include "includes.h"
+   5:Core/Src/usart.c **** #endif
+   6:Core/Src/usart.c **** 
+   7:Core/Src/usart.c **** 
+   8:Core/Src/usart.c **** #define EN_USART1_RX 			1
+   9:Core/Src/usart.c **** 
+  10:Core/Src/usart.c **** #if EN_USART1_RX   	
+  11:Core/Src/usart.c **** #define USART_REC_LEN  			200
+  12:Core/Src/usart.c **** uint8_t USART_RX_BUF[USART_REC_LEN];
+  13:Core/Src/usart.c **** uint16_t USART_RX_STA=0;
+  14:Core/Src/usart.c **** #define RXBUFFERSIZE   1
+  15:Core/Src/usart.c **** uint8_t aRxBuffer[RXBUFFERSIZE];
+  16:Core/Src/usart.c **** UART_HandleTypeDef UART1_Handler;
+  17:Core/Src/usart.c **** #endif
+  18:Core/Src/usart.c **** 
+  19:Core/Src/usart.c **** // void HAL_UART_MspInit(UART_HandleTypeDef *huart)
+  20:Core/Src/usart.c **** // {
+  21:Core/Src/usart.c **** // 	GPIO_InitTypeDef GPIO_Initure;
+  22:Core/Src/usart.c **** 	
+  23:Core/Src/usart.c **** // 	if(huart->Instance == USART1)
+  24:Core/Src/usart.c **** // 	{
+  25:Core/Src/usart.c **** // 		__HAL_RCC_GPIOA_CLK_ENABLE();
+  26:Core/Src/usart.c **** // 		__HAL_RCC_USART1_CLK_ENABLE();
+  27:Core/Src/usart.c **** // 		__HAL_RCC_AFIO_CLK_ENABLE();
+  28:Core/Src/usart.c **** 	
+  29:Core/Src/usart.c **** // 		GPIO_Initure.Pin = GPIO_PIN_9;
+ARM GAS  /tmp/ccdY0hyf.s 			page 2
+
+
+  30:Core/Src/usart.c **** // 		GPIO_Initure.Mode = GPIO_MODE_AF_PP;
+  31:Core/Src/usart.c **** // 		GPIO_Initure.Pull = GPIO_PULLUP;
+  32:Core/Src/usart.c **** // 		GPIO_Initure.Speed = GPIO_SPEED_FREQ_HIGH;
+  33:Core/Src/usart.c **** // 		HAL_GPIO_Init(GPIOA, &GPIO_Initure);
+  34:Core/Src/usart.c **** 
+  35:Core/Src/usart.c **** // 		GPIO_Initure.Pin = GPIO_PIN_10;
+  36:Core/Src/usart.c **** // 		GPIO_Initure.Mode = GPIO_MODE_AF_INPUT;
+  37:Core/Src/usart.c **** // 		HAL_GPIO_Init(GPIOA, &GPIO_Initure);
+  38:Core/Src/usart.c **** // #if EN_USART1_RX
+  39:Core/Src/usart.c **** // 		HAL_NVIC_EnableIRQ(USART1_IRQn);
+  40:Core/Src/usart.c **** // 		HAL_NVIC_SetPriority(USART1_IRQn, 3, 3);
+  41:Core/Src/usart.c **** // #endif	
+  42:Core/Src/usart.c **** // 	}
+  43:Core/Src/usart.c **** // }
+  44:Core/Src/usart.c **** 
+  45:Core/Src/usart.c **** #if EN_USART1_RX 
+  46:Core/Src/usart.c **** void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+  47:Core/Src/usart.c **** {
+  30              		.loc 1 47 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  48:Core/Src/usart.c **** 	if(huart->Instance == USART1)
+  35              		.loc 1 48 2 view .LVU1
+  36              		.loc 1 48 10 is_stmt 0 view .LVU2
+  37 0000 0268     		ldr	r2, [r0]
+  38              		.loc 1 48 4 view .LVU3
+  39 0002 194B     		ldr	r3, .L8
+  40 0004 9A42     		cmp	r2, r3
+  41 0006 00D0     		beq	.L6
+  42              	.LVL1:
+  43              	.L1:
+  49:Core/Src/usart.c **** 	{
+  50:Core/Src/usart.c **** 		if((USART_RX_STA & 0x8000) == 0)
+  51:Core/Src/usart.c **** 		{
+  52:Core/Src/usart.c **** 			if(USART_RX_STA & 0x4000)
+  53:Core/Src/usart.c **** 			{
+  54:Core/Src/usart.c **** 				if(aRxBuffer[0] != 0x0a) USART_RX_STA = 0;
+  55:Core/Src/usart.c **** 				else USART_RX_STA |= 0x8000; 
+  56:Core/Src/usart.c **** 			}
+  57:Core/Src/usart.c **** 			else
+  58:Core/Src/usart.c **** 			{	
+  59:Core/Src/usart.c **** 				if(aRxBuffer[0] == 0x0d) USART_RX_STA |= 0x4000;
+  60:Core/Src/usart.c **** 				else
+  61:Core/Src/usart.c **** 				{
+  62:Core/Src/usart.c **** 					USART_RX_BUF[USART_RX_STA&0X3FFF] = aRxBuffer[0] ;
+  63:Core/Src/usart.c **** 					USART_RX_STA++;
+  64:Core/Src/usart.c **** 					if(USART_RX_STA > (USART_REC_LEN - 1)) USART_RX_STA = 0;
+  65:Core/Src/usart.c **** 				}		 
+  66:Core/Src/usart.c **** 			}
+  67:Core/Src/usart.c **** 		}
+  68:Core/Src/usart.c **** 	}
+  69:Core/Src/usart.c **** }
+  44              		.loc 1 69 1 view .LVU4
+  45 0008 7047     		bx	lr
+  46              	.LVL2:
+ARM GAS  /tmp/ccdY0hyf.s 			page 3
+
+
+  47              	.L6:
+  50:Core/Src/usart.c **** 		{
+  48              		.loc 1 50 3 is_stmt 1 view .LVU5
+  50:Core/Src/usart.c **** 		{
+  49              		.loc 1 50 30 is_stmt 0 view .LVU6
+  50 000a 184A     		ldr	r2, .L8+4
+  51 000c 1388     		ldrh	r3, [r2]
+  52 000e B2F90020 		ldrsh	r2, [r2]
+  50:Core/Src/usart.c **** 		{
+  53              		.loc 1 50 5 view .LVU7
+  54 0012 002A     		cmp	r2, #0
+  55 0014 F8DB     		blt	.L1
+  52:Core/Src/usart.c **** 			{
+  56              		.loc 1 52 4 is_stmt 1 view .LVU8
+  52:Core/Src/usart.c **** 			{
+  57              		.loc 1 52 6 is_stmt 0 view .LVU9
+  58 0016 13F4804F 		tst	r3, #16384
+  59 001a 0ED0     		beq	.L3
+  54:Core/Src/usart.c **** 				else USART_RX_STA |= 0x8000; 
+  60              		.loc 1 54 5 is_stmt 1 view .LVU10
+  54:Core/Src/usart.c **** 				else USART_RX_STA |= 0x8000; 
+  61              		.loc 1 54 17 is_stmt 0 view .LVU11
+  62 001c 144A     		ldr	r2, .L8+8
+  63 001e 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+  54:Core/Src/usart.c **** 				else USART_RX_STA |= 0x8000; 
+  64              		.loc 1 54 7 view .LVU12
+  65 0020 0A2A     		cmp	r2, #10
+  66 0022 03D0     		beq	.L4
+  54:Core/Src/usart.c **** 				else USART_RX_STA |= 0x8000; 
+  67              		.loc 1 54 30 is_stmt 1 discriminator 1 view .LVU13
+  54:Core/Src/usart.c **** 				else USART_RX_STA |= 0x8000; 
+  68              		.loc 1 54 43 is_stmt 0 discriminator 1 view .LVU14
+  69 0024 114B     		ldr	r3, .L8+4
+  70 0026 0022     		movs	r2, #0
+  71 0028 1A80     		strh	r2, [r3]	@ movhi
+  72 002a 7047     		bx	lr
+  73              	.L4:
+  55:Core/Src/usart.c **** 			}
+  74              		.loc 1 55 10 is_stmt 1 view .LVU15
+  55:Core/Src/usart.c **** 			}
+  75              		.loc 1 55 23 is_stmt 0 view .LVU16
+  76 002c 6FEA4343 		mvn	r3, r3, lsl #17
+  77 0030 6FEA5343 		mvn	r3, r3, lsr #17
+  78 0034 0D4A     		ldr	r2, .L8+4
+  79 0036 1380     		strh	r3, [r2]	@ movhi
+  80 0038 7047     		bx	lr
+  81              	.L3:
+  59:Core/Src/usart.c **** 				else
+  82              		.loc 1 59 5 is_stmt 1 view .LVU17
+  59:Core/Src/usart.c **** 				else
+  83              		.loc 1 59 17 is_stmt 0 view .LVU18
+  84 003a 0D4A     		ldr	r2, .L8+8
+  85 003c 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+  59:Core/Src/usart.c **** 				else
+  86              		.loc 1 59 7 view .LVU19
+  87 003e 0D2A     		cmp	r2, #13
+  88 0040 0DD0     		beq	.L7
+ARM GAS  /tmp/ccdY0hyf.s 			page 4
+
+
+  62:Core/Src/usart.c **** 					USART_RX_STA++;
+  89              		.loc 1 62 6 is_stmt 1 view .LVU20
+  62:Core/Src/usart.c **** 					USART_RX_STA++;
+  90              		.loc 1 62 31 is_stmt 0 view .LVU21
+  91 0042 C3F30D01 		ubfx	r1, r3, #0, #14
+  62:Core/Src/usart.c **** 					USART_RX_STA++;
+  92              		.loc 1 62 40 view .LVU22
+  93 0046 0B48     		ldr	r0, .L8+12
+  94              	.LVL3:
+  62:Core/Src/usart.c **** 					USART_RX_STA++;
+  95              		.loc 1 62 40 view .LVU23
+  96 0048 4254     		strb	r2, [r0, r1]
+  63:Core/Src/usart.c **** 					if(USART_RX_STA > (USART_REC_LEN - 1)) USART_RX_STA = 0;
+  97              		.loc 1 63 6 is_stmt 1 view .LVU24
+  63:Core/Src/usart.c **** 					if(USART_RX_STA > (USART_REC_LEN - 1)) USART_RX_STA = 0;
+  98              		.loc 1 63 18 is_stmt 0 view .LVU25
+  99 004a 0133     		adds	r3, r3, #1
+ 100 004c 9BB2     		uxth	r3, r3
+ 101 004e 074A     		ldr	r2, .L8+4
+ 102 0050 1380     		strh	r3, [r2]	@ movhi
+  64:Core/Src/usart.c **** 				}		 
+ 103              		.loc 1 64 6 is_stmt 1 view .LVU26
+  64:Core/Src/usart.c **** 				}		 
+ 104              		.loc 1 64 8 is_stmt 0 view .LVU27
+ 105 0052 C72B     		cmp	r3, #199
+ 106 0054 D8D9     		bls	.L1
+  64:Core/Src/usart.c **** 				}		 
+ 107              		.loc 1 64 45 is_stmt 1 discriminator 1 view .LVU28
+  64:Core/Src/usart.c **** 				}		 
+ 108              		.loc 1 64 58 is_stmt 0 discriminator 1 view .LVU29
+ 109 0056 1346     		mov	r3, r2
+ 110 0058 0022     		movs	r2, #0
+ 111 005a 1A80     		strh	r2, [r3]	@ movhi
+ 112              		.loc 1 69 1 discriminator 1 view .LVU30
+ 113 005c D4E7     		b	.L1
+ 114              	.LVL4:
+ 115              	.L7:
+  59:Core/Src/usart.c **** 				else
+ 116              		.loc 1 59 30 is_stmt 1 discriminator 1 view .LVU31
+  59:Core/Src/usart.c **** 				else
+ 117              		.loc 1 59 43 is_stmt 0 discriminator 1 view .LVU32
+ 118 005e 43F48043 		orr	r3, r3, #16384
+ 119 0062 024A     		ldr	r2, .L8+4
+ 120 0064 1380     		strh	r3, [r2]	@ movhi
+ 121 0066 7047     		bx	lr
+ 122              	.L9:
+ 123              		.align	2
+ 124              	.L8:
+ 125 0068 00100140 		.word	1073811456
+ 126 006c 00000000 		.word	USART_RX_STA
+ 127 0070 00000000 		.word	aRxBuffer
+ 128 0074 00000000 		.word	USART_RX_BUF
+ 129              		.cfi_endproc
+ 130              	.LFE130:
+ 132              		.global	UART1_Handler
+ 133              		.section	.bss.UART1_Handler,"aw",%nobits
+ 134              		.align	2
+ARM GAS  /tmp/ccdY0hyf.s 			page 5
+
+
+ 137              	UART1_Handler:
+ 138 0000 00000000 		.space	68
+ 138      00000000 
+ 138      00000000 
+ 138      00000000 
+ 138      00000000 
+ 139              		.global	aRxBuffer
+ 140              		.section	.bss.aRxBuffer,"aw",%nobits
+ 141              		.align	2
+ 144              	aRxBuffer:
+ 145 0000 00       		.space	1
+ 146              		.global	USART_RX_STA
+ 147              		.section	.bss.USART_RX_STA,"aw",%nobits
+ 148              		.align	1
+ 151              	USART_RX_STA:
+ 152 0000 0000     		.space	2
+ 153              		.global	USART_RX_BUF
+ 154              		.section	.bss.USART_RX_BUF,"aw",%nobits
+ 155              		.align	2
+ 158              	USART_RX_BUF:
+ 159 0000 00000000 		.space	200
+ 159      00000000 
+ 159      00000000 
+ 159      00000000 
+ 159      00000000 
+ 160              		.text
+ 161              	.Letext0:
+ 162              		.file 2 "/usr/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/arm-none-eabi/include/machine/_defa
+ 163              		.file 3 "/usr/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/arm-none-eabi/include/sys/_stdint.h
+ 164              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h"
+ 165              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 166              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 167              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ARM GAS  /tmp/ccdY0hyf.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 usart.c
+     /tmp/ccdY0hyf.s:21     .text.HAL_UART_RxCpltCallback:0000000000000000 $t
+     /tmp/ccdY0hyf.s:27     .text.HAL_UART_RxCpltCallback:0000000000000000 HAL_UART_RxCpltCallback
+     /tmp/ccdY0hyf.s:125    .text.HAL_UART_RxCpltCallback:0000000000000068 $d
+     /tmp/ccdY0hyf.s:151    .bss.USART_RX_STA:0000000000000000 USART_RX_STA
+     /tmp/ccdY0hyf.s:144    .bss.aRxBuffer:0000000000000000 aRxBuffer
+     /tmp/ccdY0hyf.s:158    .bss.USART_RX_BUF:0000000000000000 USART_RX_BUF
+     /tmp/ccdY0hyf.s:137    .bss.UART1_Handler:0000000000000000 UART1_Handler
+     /tmp/ccdY0hyf.s:134    .bss.UART1_Handler:0000000000000000 $d
+     /tmp/ccdY0hyf.s:141    .bss.aRxBuffer:0000000000000000 $d
+     /tmp/ccdY0hyf.s:148    .bss.USART_RX_STA:0000000000000000 $d
+     /tmp/ccdY0hyf.s:155    .bss.USART_RX_BUF:0000000000000000 $d
+
+NO UNDEFINED SYMBOLS
